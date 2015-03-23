@@ -5,17 +5,29 @@ adhoc API commands.
 
 ## Tutorial
 
-1. Generate an identity for the application:
+#### Get the code
 
 ```
-bin/cxnapp http://example.localhost '/O=MyOrg'
+git clone https://github.com/totten/cxnapp
+cd cxnapp
+composer install
 ```
+
+#### Generate an identity for the application:
+
+```
+bin/cxnapp http://example.localhost 'O=MyOrg'
+```
+
+The first argument is the URL where the app will be accessible. The second
+argument is a "DN" (as in X.509 or LDAP) for your organization.
 
 Take a look at app/metadata.json. This file provides all the metadata about
 the application.
 
-2. Setup a virtual host for the 'web' folder -- e.g. in Debian/Ubuntu with
-civicrm-buildkit:
+#### Setup a virtual host for the 'web' folder
+
+e.g. in Debian/Ubuntu with civicrm-buildkit:
 
 ```
 cd web
@@ -25,7 +37,7 @@ curl http://example.localhost/
 ## Note: This should output the application description.
 ```
 
-3. Configure your test instance of CiviCRM to load this application.
+#### Connect a test instance of CiviCRM
 
 In your local CiviCRM installation, edit civicrm.settings.php
 and set:
@@ -38,7 +50,7 @@ Note: The above configuration is vulnerable to manipulation by
 man-in-the-middle attackers.  It's acceptable for local development but
 should not be used in production sites.
 
-4. In CiviCRM, navigate to "/civicrm/a/#/cxn". In "Advanced", enter
+In CiviCRM, navigate to "/civicrm/a/#/cxn". In "Advanced", enter
 the URL, "http://example.localhost/cxn/metadata.json".
 
 ## Development
@@ -46,8 +58,8 @@ the URL, "http://example.localhost/cxn/metadata.json".
 To customize the registration process, extend RegistrationServer and
 override the functions, onCxnRegister() and onCxnUnregister().
 
-The default data-store uses a shared JSON file. This is not safe for
-production environments.  You should:
+The default configuration stores shared secrets in a JSON file. This
+is not safe for production environments.  You should:
 
  * Provide a different implementation of CxnStoreInterface.
  * Edit AdhocConfig.php to use the new CxnStore class.
