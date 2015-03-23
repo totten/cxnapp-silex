@@ -1,7 +1,4 @@
 <?php
-use Civi\Cxn\Rpc\AppIdentity;
-use Civi\Cxn\Rpc\AppServer;
-use Civi\Cxn\Rpc\CaIdentity;
 use Civi\Cxn\Rpc\Constants;
 
 require_once __DIR__ . '/../vendor/autoload.php';
