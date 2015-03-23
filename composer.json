@@ -16,6 +16,7 @@
             "Civi\\Cxn\\App\\": "src/"
          }
     },
+    "license": "MIT",
     "authors": [
         {
             "name": "Tim Otten",
