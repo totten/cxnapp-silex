@@ -5,6 +5,12 @@
         "civicrm/civicrm-cxn-rpc": "dev-master",
         "symfony/console": "~2.6"
     },
+    "repositories": [
+      {
+        "type": "git",
+        "url": "https://github.com/totten/civicrm-cxn-rpc"
+      }
+    ],
     "autoload": {
         "psr-4": {
             "Civi\\Cxn\\Adhoc\\": "src/"
@@ -16,10 +22,10 @@
             "email": "totten@civicrm.org"
         }
     ],
-    "repositories": [
-      {
-        "type": "git",
-        "url": "https://github.com/totten/civicrm-cxn-rpc"
-      }
-    ]
+    "bin": [
+        "bin/cxn-adhoc"
+    ],
+    "config": {
+        "bin-dir": "bin"
+    }
 }
