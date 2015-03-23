@@ -20,7 +20,7 @@ class InitCommand extends Command {
       ->setDescription('Initialize the configuration files')
       ->setHelp('Example: cxn-adhoc init "http://myapp.localhost"')
       ->addArgument('url', InputArgument::REQUIRED, 'The registration URL where the app will be published')
-      ->addArgument('dn', InputArgument::OPTIONAL, 'The DN in the application certificate', '/O=DemoApp');
+      ->addArgument('basedn', InputArgument::OPTIONAL, 'The DN in the application certificate', 'O=DemoApp');
   }
 
   protected function execute(InputInterface $input, OutputInterface $output) {
@@ -28,7 +28,7 @@ class InitCommand extends Command {
 
     if (!file_exists($config->getIdFile())) {
       $output->writeln("<info>Create id file ({$config->getIdFile()})</info>");
-      $appId = base64_encode(crypt_random_string(Constants::APP_ID_CHARS));
+      $appId = $this->createAppID();
       file_put_contents($config->getIdFile(), $appId);
     }
     else {
@@ -48,12 +48,13 @@ class InitCommand extends Command {
 
     if (!file_exists($config->getMetadataFile())) {
       $output->writeln("<info>Create metadata file ({$config->getMetadataFile()})</info>");
+      $dn = "/CN=$appId, " . $input->getArgument('basedn');
       $appMeta = array(
         $appId => array(
-          'desc'=> 'This is the adhoc connection app. Once connected, the app-provider can make API calls to your site.',
+          'desc' => 'This is the adhoc connection app. Once connected, the app-provider can make API calls to your site.',
           'appId' => $appId,
-          'appCert' => CA::createSelfSignedCert($appKeyPair, $input->getArgument('dn')),
-          'appUrl' => $input->getArgument('url'),
+          'appCert' => CA::createSelfSignedCert($appKeyPair, $dn),
+          'appUrl' => $input->getArgument('url') . '/cxn/register',
           'perm' => array(
             'api' => array(
               array('entity' => '*', 'action' => '*', 'params' => '*'),
@@ -62,7 +63,7 @@ class InitCommand extends Command {
           ),
         ),
       );
-      file_put_contents($config->getMetadataFile(), json_encode($appMeta));
+      file_put_contents($config->getMetadataFile(), json_encode($appMeta, JSON_PRETTY_PRINT));
     }
     else {
       $output->writeln("<info>Found metadata file ({$config->getMetadataFile()})</info>");
@@ -81,6 +82,16 @@ class InitCommand extends Command {
     }
 
     print_r($appMeta[$appId]);
+  }
+
+  public static function createAppID() {
+    $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    $alphabetSize = strlen($alphabet);
+    $result = '';
+    for ($i = 0; $i < Constants::APP_ID_CHARS; $i++) {
+      $result .= $alphabet{rand(1, $alphabetSize) - 1};
+    }
+    return $result;
   }
 
 }

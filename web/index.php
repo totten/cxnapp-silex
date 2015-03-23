@@ -14,14 +14,24 @@ $app['config'] = function() {
 };
 
 $app->get('/', function () use ($app) {
-  return 'This is the adhoc connection app. Once connected, the app-provider can make API calls to your site.';
+  header('Content-type: text/plain');
+
+  /** @var \Civi\Cxn\Adhoc\AdhocConfig $config */
+  $config = $app['config'];
+  $appMeta = $config->getMetadata();
+  return $appMeta['desc'];
 });
 
-$app->get('/cxn', function () use ($app) {
-  return 'This is the adhoc connection app. Once connected, the app-provider can make API calls to your site.';
+$app->get('/cxn/metadata.json', function () use ($app) {
+  header('Content-Type: application/javascript');
+
+  /** @var \Civi\Cxn\Adhoc\AdhocConfig $config */
+  $config = $app['config'];
+  $appMeta = $config->getMetadata();
+  return json_encode($appMeta);
 });
 
-$app->post('/cxn', function () use ($app) {
+$app->post('/cxn/register', function () use ($app) {
   /** @var \Civi\Cxn\Adhoc\AdhocConfig $config */
   $config = $app['config'];
 
