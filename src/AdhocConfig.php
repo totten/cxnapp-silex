@@ -2,7 +2,7 @@
 
 namespace Civi\Cxn\Adhoc;
 
-use Civi\Cxn\Rpc\JsonFileCxnStore;
+use Civi\Cxn\Rpc\CxnStore\JsonFileCxnStore;
 use Civi\Cxn\Rpc\KeyPair;
 
 /**

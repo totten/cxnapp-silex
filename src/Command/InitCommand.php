@@ -4,7 +4,7 @@ namespace Civi\Cxn\Adhoc\Command;
 use Civi\Cxn\Adhoc\AdhocConfig;
 use Civi\Cxn\Rpc\CA;
 use Civi\Cxn\Rpc\Constants;
-use Civi\Cxn\Rpc\JsonFileCxnStore;
+use Civi\Cxn\Rpc\CxnStore\JsonFileCxnStore;
 use Civi\Cxn\Rpc\KeyPair;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

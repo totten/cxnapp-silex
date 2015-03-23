@@ -2,7 +2,7 @@
 namespace Civi\Cxn\Adhoc\Command;
 
 use Civi\Cxn\Adhoc\AdhocConfig;
-use Civi\Cxn\Rpc\JsonFileCxnStore;
+use Civi\Cxn\Rpc\CxnStore\JsonFileCxnStore;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
