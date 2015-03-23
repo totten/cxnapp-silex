@@ -1,8 +1,8 @@
 <?php
-namespace Civi\Cxn\Adhoc;
+namespace Civi\Cxn\App;
 
-use Civi\Cxn\Adhoc\Command\CallCommand;
-use Civi\Cxn\Adhoc\Command\InitCommand;
+use Civi\Cxn\App\Command\CallCommand;
+use Civi\Cxn\App\Command\InitCommand;
 use Symfony\Component\Console\Command\ListCommand;
 
 class Application extends \Symfony\Component\Console\Application {
@@ -13,7 +13,7 @@ class Application extends \Symfony\Component\Console\Application {
    * @return
    */
   public static function main($binDir) {
-    $application = new Application('cxn-adhoc', '@package_version@');
+    $application = new Application('cxnapp', '@package_version@');
     $application->run();
   }
 
@@ -31,7 +31,7 @@ class Application extends \Symfony\Component\Console\Application {
   public function createCommands() {
     $commands = array();
     $commands[] = new InitCommand();
-    $commands[] = new \Civi\Cxn\Adhoc\Command\GetCommand();
+    $commands[] = new \Civi\Cxn\App\Command\GetCommand();
     $commands[] = new CallCommand();
     return $commands;
   }

@@ -13,7 +13,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Civi\\Cxn\\Adhoc\\": "src/"
+            "Civi\\Cxn\\App\\": "src/"
          }
     },
     "authors": [
@@ -23,7 +23,7 @@
         }
     ],
     "bin": [
-        "bin/cxn-adhoc"
+        "bin/cxnapp"
     ],
     "config": {
         "bin-dir": "bin"

@@ -16,4 +16,4 @@ foreach ($autoloaders as $autoloader) {
 if (!$found) {
   die("Failed to find autoloader");
 }
-\Civi\Cxn\Adhoc\Application::main(__DIR__);
+\Civi\Cxn\App\Application::main(__DIR__);

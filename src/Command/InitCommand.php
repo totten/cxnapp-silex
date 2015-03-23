@@ -1,7 +1,7 @@
 <?php
-namespace Civi\Cxn\Adhoc\Command;
+namespace Civi\Cxn\App\Command;
 
-use Civi\Cxn\Adhoc\AdhocConfig;
+use Civi\Cxn\App\AdhocConfig;
 use Civi\Cxn\Rpc\CA;
 use Civi\Cxn\Rpc\Constants;
 use Civi\Cxn\Rpc\CxnStore\JsonFileCxnStore;
@@ -18,7 +18,7 @@ class InitCommand extends Command {
     $this
       ->setName('init')
       ->setDescription('Initialize the configuration files')
-      ->setHelp('Example: cxn-adhoc init "http://myapp.localhost"')
+      ->setHelp('Example: cxnapp init "http://myapp.localhost"')
       ->addArgument('url', InputArgument::REQUIRED, 'The registration URL where the app will be published')
       ->addArgument('basedn', InputArgument::OPTIONAL, 'The DN in the application certificate', 'O=DemoApp');
   }

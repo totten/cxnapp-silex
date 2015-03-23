@@ -1,6 +1,6 @@
 <?php
 
-namespace Civi\Cxn\Adhoc;
+namespace Civi\Cxn\App;
 
 use Civi\Cxn\Rpc\CxnStore\JsonFileCxnStore;
 use Civi\Cxn\Rpc\KeyPair;

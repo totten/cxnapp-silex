@@ -1,7 +1,7 @@
 <?php
-namespace Civi\Cxn\Adhoc\Command;
+namespace Civi\Cxn\App\Command;
 
-use Civi\Cxn\Adhoc\AdhocConfig;
+use Civi\Cxn\App\AdhocConfig;
 use Civi\Cxn\Rpc\CxnStore\JsonFileCxnStore;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

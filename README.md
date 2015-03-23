@@ -8,7 +8,7 @@ adhoc API commands.
 1. Generate an identity for the application:
 
 ```
-bin/cxn-adhoc http://example.localhost '/O=MyOrg'
+bin/cxnapp http://example.localhost '/O=MyOrg'
 ```
 
 Take a look at app/metadata.json. This file provides all the metadata about
