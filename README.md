@@ -3,7 +3,7 @@ The CXN adhoc app is a simple demonstration.
 Sites may register for the adhoc app. The app administrator may then issue
 adhoc API commands.
 
-== Tutorial
+## Tutorial
 
 1. Generate an identity for the application:
 
@@ -41,7 +41,7 @@ should not be used in production sites.
 4. In CiviCRM, navigate to "/civicrm/a/#/cxn". In "Advanced", enter
 the URL, "http://example.localhost/cxn/metadata.json".
 
-== Development
+## Development
 
 To customize the registration process, extend RegistrationServer and
 override the functions, onCxnRegister() and onCxnUnregister().
@@ -52,16 +52,16 @@ production environments.  You should:
  * Provide a different implementation of CxnStoreInterface.
  * Edit AdhocConfig.php to use the new CxnStore class.
 
-== Go live
+## Go live
 
 1. Deploy on a real web-server.
 
 2. Send a copy of the "metadata.json" to your point-of-contact at
 civicrm.org.
 
-3. Your POC will provide a signed an updated copy of metadata.json
-along with a signed certificate. This will be the official copy
-distributed to downstream sites. You should update your copy of
-metadata.json to match.
+3. Your POC will provide an updated copy of metadata.json with
+a signed certificate. This will be the official copy distributed
+to downstream sites. You should update your copy of metadata.json
+to match.
 
 4. Update your copy of metadata.json.
