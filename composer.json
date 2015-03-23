@@ -1,0 +1,25 @@
+{
+    "name": "totten/cxncron",
+    "require": {
+        "silex/silex": "~1.2",
+        "civicrm/civicrm-cxn-rpc": "dev-master",
+        "symfony/console": "~2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Civi\\Cxn\\Adhoc\\": "src/"
+         }
+    },
+    "authors": [
+        {
+            "name": "Tim Otten",
+            "email": "totten@civicrm.org"
+        }
+    ],
+    "repositories": [
+      {
+        "type": "git",
+        "url": "https://github.com/totten/civicrm-cxn-rpc"
+      }
+    ]
+}
