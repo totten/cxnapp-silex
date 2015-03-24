@@ -6,7 +6,7 @@ ini_set('display_error', 0);
 
 $app = new Silex\Application();
 
-$app['config'] = function() {
+$app['config'] = function () {
   return new \Civi\Cxn\App\AdhocConfig();
 };
 
@@ -34,7 +34,14 @@ $app->post('/cxn/register', function () use ($app) {
 
   header('Content-type: ' . Constants::MIME_TYPE);
   $server = new \Civi\Cxn\Rpc\RegistrationServer($config->getMetadata(), $config->getKeyPair(), $config->getCxnStore());
+  $server->setLog($config->getLog('RegistrationServer'));
   $server->handleAndRespond(file_get_contents('php://input'));
+});
+
+$app->error(function ($e) use ($app) {
+  $app['config']->getLog('index.php')->error("Unhandled exception", array(
+    'exception' => $e,
+  ));
 });
 
 $app->run();

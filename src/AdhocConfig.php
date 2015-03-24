@@ -8,7 +8,7 @@ use Civi\Cxn\Rpc\KeyPair;
 /**
  * Class AdhocConfig
  *
- * @package Civi\Cxn\Rpc
+ * @package Civi\Cxn\App
  */
 class AdhocConfig {
 
@@ -21,6 +21,9 @@ class AdhocConfig {
     return dirname(__DIR__) . '/app/id.txt';
   }
 
+  /**
+   * @return string
+   */
   public function getId() {
     if (!$this->id) {
       if (!file_exists($this->getIdFile())) {
@@ -36,6 +39,12 @@ class AdhocConfig {
     return dirname(__DIR__) . '/app/keys.json';
   }
 
+  /**
+   * @return array
+   *   Array with elements:
+   *     - publickey: string, pem.
+   *     - privateey: string, pem
+   */
   public function getKeyPair() {
     if (!$this->keyPair) {
       if (!file_exists($this->getKeyFile())) {
@@ -51,6 +60,9 @@ class AdhocConfig {
     return dirname(__DIR__) . '/app/metadata.json';
   }
 
+  /**
+   * @return array
+   */
   public function getMetadata() {
     if (!$this->metadata) {
       if (!file_exists($this->getMetadataFile())) {
@@ -70,6 +82,9 @@ class AdhocConfig {
     return dirname(__DIR__) . '/app/cxnStore.json';
   }
 
+  /**
+   * @return \Civi\Cxn\Rpc\CxnStore\CxnStoreInterface
+   */
   public function getCxnStore() {
     if (!$this->cxnStore) {
       if (!file_exists($this->getCxnStoreFile())) {
@@ -80,4 +95,15 @@ class AdhocConfig {
     return $this->cxnStore;
   }
 
+  public function getLogFile() {
+    return dirname(__DIR__) . '/app/log.txt';
+  }
+
+  /**
+   * @param string $prefix
+   * @return \Psr\Log\LoggerInterface
+   */
+  public function getLog($prefix = '') {
+    return new \Civi\Cxn\App\SimpleFileLogger($this->getLogFile(), $prefix);
+  }
 }
