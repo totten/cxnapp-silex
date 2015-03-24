@@ -45,6 +45,7 @@ class CallCommand extends Command {
     $output->writeln("<info>Params</info>: " . print_r($params, TRUE));
 
     $apiClient = new ApiClient($config->getMetadata(), $config->getCxnStore(), $cxnId);
+    $apiClient->setLog($config->getLog('ApiClient'));
     $result = $apiClient->call($entity, $action, $params);
     $output->writeln("<info>Result</info>: " . print_r($result, TRUE));
   }
