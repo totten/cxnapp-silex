@@ -50,8 +50,11 @@ Note: The above configuration is vulnerable to manipulation by
 man-in-the-middle attackers.  It's acceptable for local development but
 should not be used in production sites.
 
-In CiviCRM, navigate to "/civicrm/a/#/cxn". In "Advanced", enter
-the URL, "http://example.localhost/cxn/metadata.json".
+Now use the Cxn.register API to make a connection, e.g.
+
+```
+drush cvapi cxn.register appMetaUrl=http://example.localhost/cxn/metadata.json debug=1
+```
 
 ## Development
 
