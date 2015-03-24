@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CallCommand extends Command {
 
+  const DEFAULT_VERSION = 3;
+
   protected function configure() {
     $this
       ->setName('call')
@@ -29,6 +31,9 @@ class CallCommand extends Command {
     foreach ($input->getArgument('key=value') as $expr) {
       list ($key, $value) = explode('=', $expr, 2);
       $params[$key] = $value;
+    }
+    if (empty($params['version'])) {
+      $params['version'] = self::DEFAULT_VERSION;
     }
 
     $output->writeln("<info>CxnID</info>: $cxnId");
