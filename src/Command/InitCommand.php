@@ -28,7 +28,7 @@ class InitCommand extends Command {
 
     if (!file_exists($config->getIdFile())) {
       $output->writeln("<info>Create id file ({$config->getIdFile()})</info>");
-      $appId = $this->createAppID();
+      $appId = bin2hex(crypt_random_string(Constants::APP_ID_CHARS));
       file_put_contents($config->getIdFile(), $appId);
     }
     else {
@@ -70,7 +70,7 @@ class InitCommand extends Command {
 
     if (!file_exists($config->getMetadataFile())) {
       $output->writeln("<info>Create metadata file ({$config->getMetadataFile()})</info>");
-      $appCert = CA::signCSR(KeyPair::load($appKeyPair), $demoCaCert, $appCsr);
+      $appCert = CA::signCSR($appKeyPair, $demoCaCert, $appCsr);
       $appMeta = array(
         $appId => array(
           'desc' => 'This is the adhoc connection app. Once connected, the app-provider can make API calls to your site.',
@@ -104,16 +104,6 @@ class InitCommand extends Command {
     }
 
     print_r($appMeta[$appId]);
-  }
-
-  public static function createAppID() {
-    $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-    $alphabetSize = strlen($alphabet);
-    $result = '';
-    for ($i = 0; $i < Constants::APP_ID_CHARS; $i++) {
-      $result .= $alphabet{rand(1, $alphabetSize) - 1};
-    }
-    return $result;
   }
 
 }
