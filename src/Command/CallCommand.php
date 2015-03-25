@@ -26,6 +26,9 @@ class CallCommand extends Command {
     $config = new AdhocConfig();
 
     $cxnId = $input->getArgument('cxnId');
+    if (!preg_match('/^cxn:/', $cxnId)) {
+      $cxnId = 'cxn:' . $cxnId;
+    }
     list ($entity, $action) = explode('.', $input->getArgument('Entity.action'));
     $params = array();
     foreach ($input->getArgument('key=value') as $expr) {
