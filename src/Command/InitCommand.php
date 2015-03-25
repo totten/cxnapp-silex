@@ -2,6 +2,7 @@
 namespace Civi\Cxn\App\Command;
 
 use Civi\Cxn\App\AdhocConfig;
+use Civi\Cxn\Rpc\AppMeta;
 use Civi\Cxn\Rpc\CA;
 use Civi\Cxn\Rpc\Constants;
 use Civi\Cxn\Rpc\CxnStore\JsonFileCxnStore;
@@ -28,7 +29,7 @@ class InitCommand extends Command {
 
     if (!file_exists($config->getIdFile())) {
       $output->writeln("<info>Create id file ({$config->getIdFile()})</info>");
-      $appId = bin2hex(crypt_random_string(Constants::APP_ID_CHARS));
+      $appId = AppMeta::createId();
       file_put_contents($config->getIdFile(), $appId);
     }
     else {
