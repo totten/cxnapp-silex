@@ -35,6 +35,7 @@ class InitCommand extends Command {
       $output->writeln("<info>Found id file ({$config->getIdFile()})</info>");
       $appId = trim(file_get_contents($config->getIdFile()));
     }
+    $appDn = $input->getArgument('basedn') . ", CN=$appId";
 
     if (!file_exists($config->getKeyFile())) {
       $output->writeln("<info>Create key file ({$config->getKeyFile()})</info>");
@@ -46,14 +47,35 @@ class InitCommand extends Command {
       $appKeyPair = KeyPair::load($config->getKeyFile());
     }
 
+    if (!file_exists($config->getDemoCaFile())) {
+      $output->writeln("<info>Create demo CA file ({$config->getDemoCaFile()})</info>");
+      $demoCaDn = $input->getArgument('basedn') . ", CN=DemoCA";
+      $demoCaCert = CA::create($appKeyPair, $demoCaDn);
+      CA::save($config->getDemoCaFile(), $demoCaCert);
+    }
+    else {
+      $output->writeln("<info>Found demo CA file ({$config->getDemoCaFile()})</info>");
+      $demoCaCert = CA::load($config->getDemoCaFile());
+    }
+
+    if (!file_exists($config->getCsrFile())) {
+      $output->writeln("<info>Create certificate request ({$config->getCsrFile()})</info>");
+      $appCsr = CA::createCSR($appKeyPair, $appDn);
+      file_put_contents($config->getCsrFile(), $appCsr);
+    }
+    else {
+      $output->writeln("<info>Found certificate request ({$config->getCsrFile()})</info>");
+      $appCsr = file_get_contents($config->getCsrFile());
+    }
+
     if (!file_exists($config->getMetadataFile())) {
       $output->writeln("<info>Create metadata file ({$config->getMetadataFile()})</info>");
-      $dn = "/CN=$appId, " . $input->getArgument('basedn');
+      $appCert = CA::signCSR(KeyPair::load($appKeyPair), $demoCaCert, $appCsr);
       $appMeta = array(
         $appId => array(
           'desc' => 'This is the adhoc connection app. Once connected, the app-provider can make API calls to your site.',
           'appId' => $appId,
-          'appCert' => CA::createSelfSignedCert($appKeyPair, $dn),
+          'appCert' => $appCert,
           'appUrl' => $input->getArgument('url') . '/cxn/register',
           'perm' => array(
             'api' => array(

@@ -39,6 +39,14 @@ class AdhocConfig {
     return dirname(__DIR__) . '/app/keys.json';
   }
 
+  public function getDemoCaFile() {
+    return dirname(__DIR__) . '/app/democa.crt';
+  }
+
+  public function getCsrFile() {
+    return dirname(__DIR__) . '/app/request.csr';
+  }
+
   /**
    * @return array
    *   Array with elements:
