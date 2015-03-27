@@ -43,7 +43,7 @@ In your local CiviCRM installation, edit civicrm.settings.php
 and set:
 
 ```
-define('CIVICRM_CXN_VERIFY', false);
+define('CIVICRM_CXN_CA', 'none');
 ```
 
 Note: The above configuration is vulnerable to manipulation by
@@ -67,16 +67,38 @@ is not safe for production environments.  You should:
  * Provide a different implementation of CxnStoreInterface.
  * Edit AdhocConfig.php to use the new CxnStore class.
 
-## Go live
+## From development to production
 
-1. Deploy on a real web-server.
+One may deploy instances of cxnapp to development, staging and production
+using essentially the same procedure -- download the code, configure the web
+server, and run "cxnapp init" to produce an appId and keypair.  However, as
+you progress, the certification requirements become more stringent.
 
-2. Send a copy of the "metadata.json" to your point-of-contact at
-civicrm.org.
+Here are a few deployment recipes:
 
-3. Your POC will provide an updated copy of metadata.json with
-a signed certificate. This will be the official copy distributed
-to downstream sites. You should update your copy of metadata.json
-to match.
+ * Local development
+   * Deploy your app on localhost (e.g. "http://example.localhost").
+   * Don't bother with certificates.
+   * In civicrm.settings.php, set ```define('CIVICRM_CXN_CA', 'none');```
+   * To connect, run ```drush cvapi cxn.register appMetaUrl=http://example.localhost/cxn/metadata.json debug=1```
+ * Staging or private beta, unsigned / self-managed / insecure
+   * Deploy your app on a public web server (e.g. "http://app.example.net").
+   * In civicrm.settings.php, set ```define('CIVICRM_CXN_CA', 'none');```
+   * To connect, run ```drush cvapi cxn.register appMetaUrl=http://app.example.net/cxn/metadata.json debug=1```
+ * Staging or private beta, signed by civicrm.org
+   * Deploy your app on a public web server (e.g. "http://app.example.net").
+   * Send the metadata.json to your point-of-contact at civicrm.org.
+   * Receive an updated metadata.json with a certificate signed by CiviTestRootCA.
+   * Deploy the updated metadata.json. (This is not strictly necessary but is good for consistency.)
+   * In civicrm.settings.php, set ```define('CIVICRM_CXN_CA', 'CiviTestRootCA');```
+   * To connect, run ```drush cvapi cxn.register appMetaUrl=http://app.example.net/cxn/metadata.json debug=1```
+ * Production, signed by civicrm.org
+   * Deploy your app on a public web server (e.g. "http://app.example.net").
+   * Send the metadata.json to your point-of-contact at civicrm.org.
+   * Receive an updated metadata.json with a certificate signed by CiviRootCA.
+   * Deploy the updated metadata.json. (This is not strictly necessary but is good for consistency.)
+   * In civicrm.settings.php, let CIVICRM_CXN_CA use the default value (CiviRootCA).
+   * To connect, use the UI.
 
-4. Update your copy of metadata.json.
+(Aside: The processes for staging or private beta are a little more onerous
+that I'd like.  It would take a day's work to improve this.)
