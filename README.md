@@ -16,7 +16,7 @@ composer install
 #### Generate an identity for the application:
 
 ```
-bin/cxnapp http://example.localhost 'O=MyOrg'
+bin/cxnapp init http://example.localhost 'O=MyOrg'
 ```
 
 The first argument is the URL where the app will be accessible. The second
@@ -61,6 +61,48 @@ drush cvapi cxn.register app_meta_url=http://example.localhost/cxn/metadata.json
 
 ## Register via app ID
 drush cvapi cxn.register app_guid=app:abcd1234abcd1234 debug=1
+```
+
+#### Ping the test instance of CiviCRM
+
+The cxnapp will now be able to send requests to the registered instance of Civi. For example,
+we can use the System.get API to determine the active version of Civi:
+
+```
+$ bin/cxnapp get
++--------------------------------------+-------------------------------------------------------+
+| Link ID                              | Site URL                                              |
++--------------------------------------+-------------------------------------------------------+
+| cxn:6bf52a5773fc8bbba8cc5befc85b7589 | http://d46.l/sites/all/modules/civicrm/extern/cxn.php |
++--------------------------------------+-------------------------------------------------------+
+
+$ bin/cxnapp call cxn:6bf52a5773fc8bbba8cc5befc85b7589 system.get
+CxnID: cxn:6bf52a5773fc8bbba8cc5befc85b7589
+Site URL: http://d46.l/sites/all/modules/civicrm/extern/cxn.php
+Entity: system
+Action: get
+Params: Array
+(
+    [version] => 3
+)
+
+Result: Array
+(
+    [is_error] => 0
+    [version] => 3
+    [count] => 1
+    [id] => 0
+    [values] => Array
+        (
+            [0] => Array
+                (
+                    [version] => 4.6.0
+                    [uf] => Drupal
+                )
+
+        )
+
+)
 ```
 
 ## Development
