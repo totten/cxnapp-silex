@@ -1,5 +1,6 @@
 <?php
 use Civi\Cxn\Rpc\Constants;
+use Symfony\Component\HttpFoundation\Response;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 ini_set('display_error', 0);
@@ -12,29 +13,31 @@ $app['config'] = function () {
 
 // OPTIONAL: Provide a nice endpoint for enterprising web surfers.
 $app->get('/', function () use ($app) {
-  header('Content-type: text/plain');
-
   /** @var \Civi\Cxn\App\AdhocConfig $config */
   $config = $app['config'];
   $appMeta = $config->getMetadata();
-  return $appMeta['desc'];
+  return new Response(
+    $appMeta['title'] . "\n\n" . $appMeta['desc'],
+    200,
+    array('Content-Type' => 'text/plain')
+  );
 });
 
 // OPTIONAL: Facilitate testing by publishing this
 // app's metadata at a public URL.
 $app->get('/cxn/metadata.json', function () use ($app) {
-  header('Content-Type: application/javascript');
-
   /** @var \Civi\Cxn\App\AdhocConfig $config */
   $config = $app['config'];
-  return json_encode($config->getMetadata());
+  return new Response(
+    json_encode($config->getMetadata()),
+    200,
+    array('Content-Type' => 'application/javascript')
+  );
 });
 
 // OPTIONAL: Facilitate testing by publishing a feed of all
 // apps.
 $app->get('/cxn/apps', function () use ($app) {
-  header('Content-Type: ' . Constants::MIME_TYPE);
-
   /** @var \Civi\Cxn\App\AdhocConfig $config */
   $config = $app['config'];
   $appMeta = $config->getMetadata();
@@ -44,8 +47,7 @@ $app->get('/cxn/apps', function () use ($app) {
     array($config->getId() => $config->getMetadata())
   );
 
-  $message->send();
-  exit();
+  return $message->toSymfonyResponse();
 });
 
 // REQUIRED: Provide an endpoint for processing registrations.
@@ -53,11 +55,9 @@ $app->post('/cxn/register', function () use ($app) {
   /** @var \Civi\Cxn\App\AdhocConfig $config */
   $config = $app['config'];
 
-  header('Content-type: ' . Constants::MIME_TYPE);
   $server = new \Civi\Cxn\Rpc\RegistrationServer($config->getMetadata(), $config->getKeyPair(), $config->getCxnStore());
   $server->setLog($config->getLog('RegistrationServer'));
-  $server->handle(file_get_contents('php://input'))->send();
-  exit();
+  return $server->handle(file_get_contents('php://input'))->toSymfonyResponse();
 });
 
 $app->error(function ($e) use ($app) {
