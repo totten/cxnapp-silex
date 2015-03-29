@@ -74,6 +74,7 @@ class InitCommand extends Command {
       $appCert = CA::signCSR($appKeyPair, $demoCaCert, $appCsr);
       $appMeta = array(
         $appId => array(
+          'title' => 'Example App',
           'desc' => 'This is the adhoc connection app. Once connected, the app-provider can make API calls to your site.',
           'appId' => $appId,
           'appCert' => $appCert,
