@@ -80,8 +80,9 @@ class InitCommand extends Command {
           'appCert' => $appCert,
           'appUrl' => $input->getArgument('url') . '/cxn/register',
           'perm' => array(
+            'desc' => 'Description/rationale for permissions',
             'api' => array(
-              array('entity' => '*', 'action' => '*', 'params' => '*'),
+              array('entity' => '*', 'actions' => '*', 'required' => array(), 'fields' => '*'),
             ),
             'sys' => array('administer CiviCRM'),
           ),
