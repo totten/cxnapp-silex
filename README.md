@@ -44,16 +44,23 @@ and set:
 
 ```
 define('CIVICRM_CXN_CA', 'none');
+define('CIVICRM_CXN_APPS_URL', 'http://example.localhost/cxn/apps');
 ```
 
-Note: The above configuration is vulnerable to manipulation by
-man-in-the-middle attackers.  It's acceptable for local development but
-should not be used in production sites.
+(Note: The above configuration is vulnerable to man-in-the-middle attacks.
+It's acceptable for local development but should not be used in production
+sites.  Consequently, there is no API for reading or writing these
+settings.)
 
-Now use the Cxn.register API to make a connection, e.g.
+You can now connect using the CiviCRM UI (/civicrm/a/#/cxn). Alternatively,
+you can register on the command-line:
 
 ```
+## Register via URL
 drush cvapi cxn.register app_meta_url=http://example.localhost/cxn/metadata.json debug=1
+
+## Register via app ID
+drush cvapi cxn.register app_guid=app:abcd1234abcd1234 debug=1
 ```
 
 ## Development
