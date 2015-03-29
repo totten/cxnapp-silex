@@ -17,6 +17,10 @@ class AdhocConfig {
   private $metadata;
   private $cxnStore;
 
+  public function getDir() {
+    return dirname(__DIR__) . '/app';
+  }
+
   public function getIdFile() {
     return dirname(__DIR__) . '/app/id.txt';
   }

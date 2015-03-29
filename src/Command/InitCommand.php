@@ -27,6 +27,10 @@ class InitCommand extends Command {
   protected function execute(InputInterface $input, OutputInterface $output) {
     $config = new AdhocConfig();
 
+    if (!is_dir($config->getDir())) {
+      mkdir($config->getDir());
+    }
+
     if (!file_exists($config->getIdFile())) {
       $output->writeln("<info>Create id file ({$config->getIdFile()})</info>");
       $appId = AppMeta::createId();
