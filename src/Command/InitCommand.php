@@ -86,9 +86,9 @@ class InitCommand extends Command {
           'perm' => array(
             'desc' => 'Description/rationale for permissions',
             'api' => array(
-              array('entity' => '*', 'actions' => '*', 'required' => array(), 'fields' => '*'),
+              array('version' => 3, 'entity' => '*', 'actions' => '*', 'required' => array(), 'fields' => '*'),
             ),
-            'sys' => array('administer CiviCRM'),
+            'grant' => '*',
           ),
         ),
       );
