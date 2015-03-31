@@ -92,7 +92,7 @@ class InitCommand extends Command {
           ),
         ),
       );
-      file_put_contents($config->getMetadataFile(), json_encode($appMeta, JSON_PRETTY_PRINT));
+      file_put_contents($config->getMetadataFile(), json_encode($appMeta, defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 0));
     }
     else {
       $output->writeln("<info>Found metadata file ({$config->getMetadataFile()})</info>");
