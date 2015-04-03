@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "302c0e105ca9e03829185014a3843de6",
+    "hash": "2de0a3c22451d55a6cab5cfa469fc497",
     "packages": [
         {
             "name": "civicrm/civicrm-cxn-rpc",
@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/totten/civicrm-cxn-rpc",
-                "reference": "ab747ef2e1594ee214720dcfbf76b73d5fb4d86e"
+                "reference": "1c1ee06a396a846a5ee115dba0b9d922cf24ae05"
             },
             "require": {
                 "phpseclib/phpseclib": "0.3.*",
@@ -37,7 +37,7 @@
                 }
             ],
             "description": "RPC library for CiviCRM QuickConnect",
-            "time": "2015-03-31 07:54:51"
+            "time": "2015-04-03 06:27:52"
         },
         {
             "name": "phpseclib/phpseclib",
