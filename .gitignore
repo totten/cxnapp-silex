@@ -1,8 +1,4 @@
 app/cxnStore.json
-app/democa.crt
-app/id.txt
 app/keys.json
 app/log.txt
-app/metadata.json
-app/request.csr
 vendor/
