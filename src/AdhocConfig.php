@@ -13,6 +13,7 @@ use Civi\Cxn\Rpc\KeyPair;
 class AdhocConfig {
 
   private $id;
+  private $mungeId;
   private $keyPair;
   private $metadata;
   private $cxnStore;
@@ -39,16 +40,31 @@ class AdhocConfig {
     return $this->id;
   }
 
+  public function getMungedId() {
+    if (!$this->mungeId) {
+      $this->mungeId = preg_replace('/[^a-zA-Z0-9\.]/', '_', $this->getId());
+    }
+    return $this->mungeId;
+  }
+
   public function getKeyFile() {
-    return dirname(__DIR__) . '/app/keys.json';
+    return dirname(__DIR__) . '/app/local/' . $this->getMungedId() . '-keys.json';
   }
 
   public function getDemoCaFile() {
-    return dirname(__DIR__) . '/app/democa.crt';
+    return dirname(__DIR__) . '/app/local/' . $this->getMungedId() . '-democa.crt';
   }
 
   public function getCsrFile() {
-    return dirname(__DIR__) . '/app/request.csr';
+    return dirname(__DIR__) . '/app/local/' . $this->getMungedId() . '.req';
+  }
+
+  public function getCertFile() {
+    return dirname(__DIR__) . '/app/local/' . $this->getMungedId() . '.crt';
+  }
+
+  public function getCert() {
+    return file_get_contents($this->getCertFile());
   }
 
   /**
@@ -86,12 +102,14 @@ class AdhocConfig {
       if (empty($this->metadata[$this->getId()])) {
         throw new \RuntimeException("Metadata file does not contain the required appId");
       }
+
+      $this->metadata[$this->getId()]['appCert'] = $this->getCert();
     }
     return $this->metadata[$this->getId()];
   }
 
   public function getCxnStoreFile() {
-    return dirname(__DIR__) . '/app/cxnStore.json';
+    return dirname(__DIR__) . '/app/local/' . $this->getMungedId() . '-cxnStore.json';
   }
 
   /**
@@ -108,7 +126,7 @@ class AdhocConfig {
   }
 
   public function getLogFile() {
-    return dirname(__DIR__) . '/app/log.txt';
+    return dirname(__DIR__) . '/app/local/' . $this->getMungedId() . '.log';
   }
 
   /**

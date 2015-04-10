@@ -28,8 +28,10 @@ class InitCommand extends Command {
   protected function execute(InputInterface $input, OutputInterface $output) {
     $config = new AdhocConfig();
 
-    if (!is_dir($config->getDir())) {
-      mkdir($config->getDir());
+    foreach(array($config->getDir(), $config->getDir() . '/local') as $dir) {
+      if (!is_dir($dir)) {
+        mkdir($dir);
+      }
     }
 
     $appId = $input->getOption('id');
@@ -81,15 +83,24 @@ class InitCommand extends Command {
       $appCsr = file_get_contents($config->getCsrFile());
     }
 
+    if (!file_exists($config->getCertFile())) {
+      $output->writeln("<info>Create certificate self-signed ({$config->getCertFile()})</info>");
+      $appCert = CA::signCSR($appKeyPair, $demoCaCert, $appCsr);
+      file_put_contents($config->getCertFile(), $appCert);
+    }
+    else {
+      $output->writeln("<info>Found certificate ({$config->getCertFile()})</info>");
+      $appCert = file_get_contents($config->getCertFile());
+    }
+
     if (!file_exists($config->getMetadataFile())) {
       $output->writeln("<info>Create metadata file ({$config->getMetadataFile()})</info>");
-      $appCert = CA::signCSR($appKeyPair, $demoCaCert, $appCsr);
       $appMeta = array(
         $appId => array(
           'title' => 'Example App',
           'desc' => 'This is the adhoc connection app. Once connected, the app-provider can make API calls to your site.',
           'appId' => $appId,
-          'appCert' => $appCert,
+          'appCert' => '*PLACEHOLDER*',
           'appUrl' => $input->getArgument('url') . '/cxn/register',
           'perm' => array(
             'desc' => 'Description/rationale for permissions',
