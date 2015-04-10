@@ -20,6 +20,7 @@ class InitCommand extends Command {
       ->setName('init')
       ->setDescription('Initialize the configuration files')
       ->setHelp('Example: cxnapp init "http://myapp.localhost"')
+      ->addOption('id', NULL, InputOption::VALUE_REQUIRED, 'The applications guid. (Ex: "app:org.civicrm.myapp")(Default: random)')
       ->addArgument('url', InputArgument::REQUIRED, 'The registration URL where the app will be published')
       ->addArgument('basedn', InputArgument::OPTIONAL, 'The DN in the application certificate', 'O=DemoApp');
   }
@@ -31,15 +32,22 @@ class InitCommand extends Command {
       mkdir($config->getDir());
     }
 
-    if (!file_exists($config->getIdFile())) {
+    $appId = $input->getOption('id');
+    if (!empty($appId) || !file_exists($config->getIdFile())) {
       $output->writeln("<info>Create id file ({$config->getIdFile()})</info>");
-      $appId = AppMeta::createId();
+      if (empty($appId)) {
+        $appId = AppMeta::createId();
+      }
       file_put_contents($config->getIdFile(), $appId);
     }
     else {
       $output->writeln("<info>Found id file ({$config->getIdFile()})</info>");
       $appId = trim(file_get_contents($config->getIdFile()));
     }
+    if (!AppMeta::validateAppId($appId)) {
+      throw new \Exception("Malformed appId");
+    }
+
     $appDn = $input->getArgument('basedn') . ", CN=$appId";
 
     if (!file_exists($config->getKeyFile())) {
