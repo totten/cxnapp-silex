@@ -2,7 +2,7 @@
     "name": "totten/cxncron",
     "require": {
         "silex/silex": "~1.2",
-        "civicrm/civicrm-cxn-rpc": "dev-master#1c1ee06a396a846a5ee115dba0b9d922cf24ae05",
+        "civicrm/civicrm-cxn-rpc": "dev-master#7d9e54c16f8467b89a1e4d9e61bc25fda5dbfef3",
         "symfony/console": "~2.6"
     },
     "repositories": [
