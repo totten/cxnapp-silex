@@ -1,3 +1,10 @@
+
+# Reorganized
+
+This repo is preserved for historical purposes. It includes a deprecated reference-implementation based on Silex. The current RI is based on Symfony 2 Standard Edition. See https://github.com/civicrm/cxnapp/
+
+---
+
 The CXN adhoc app is a simple demonstration.
 
 Sites may register for the adhoc app. The app administrator may then issue
